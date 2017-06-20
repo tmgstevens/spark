@@ -71,7 +71,9 @@ object KafkaUtils extends Logging {
     fixKafkaParams(kp)
     val osr = offsetRanges.clone()
 
-    new KafkaRDD[K, V](sc, kp, osr, preferredHosts, true)
+    val useConsumerCache = sc.conf.getBoolean("spark.streaming.kafka.consumer.cache.enabled", true)
+
+    new KafkaRDD[K, V](sc, kp, osr, preferredHosts, useConsumerCache)
   }
 
   /**
